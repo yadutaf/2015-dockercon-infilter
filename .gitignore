@@ -1,0 +1,7 @@
+# Bin files
+infilter
+hostname
+sleeper
+
+# Backup files
+*.swp

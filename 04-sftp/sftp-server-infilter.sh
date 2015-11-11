@@ -13,10 +13,11 @@ function inject {
     $INFILTER $(which tee) "$DEST" > /dev/null
 }
 
-# Write stdin to $1, create all parent directories is needed
+# Write $2 to $1, create all parent directories is needed
 # ONLY if the destination does not exist yet
-function inject_if_missing {
+function inject_file_if_missing {
     DEST="$1"
+    CONTENT="$2"
 
     # Check if DEST already exists
     if $INFILTER $(which test) -f "$DEST"
@@ -25,21 +26,12 @@ function inject_if_missing {
     fi
 
     # Inject
-    inject "$DEST"
-}
-
-# Write $2 to $1, create all parent directories is needed
-# ONLY if the destination does not exist yet
-function inject_file_if_missing {
-    DEST="$1"
-    CONTENT="$2"
-
     if [ -n "$CONTENT" ]
     then
-        echo "$CONTENT" | inject_if_missing "$DEST"
+        echo "$CONTENT" | inject "$DEST"
     else
         SOURCE=$(readlink --canonicalize "$DEST")
-        cat "$SOURCE" | inject_if_missing "$DEST"
+        cat "$SOURCE" | inject "$DEST"
     fi
 }
 

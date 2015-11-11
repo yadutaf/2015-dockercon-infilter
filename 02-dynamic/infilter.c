@@ -326,6 +326,10 @@ int main(int argc, char** argv) {
     fprintf(stderr, "infilter: injection done, have a nice day!\n");
     waitpid(child, &status, 0);
 
-    return status;
+    if(WIFEXITED(status)) {
+        return WEXITSTATUS(status);
+    } else {
+        return 1;
+    }
 }
 
